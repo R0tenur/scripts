@@ -93,7 +93,8 @@ toKebabCase () {
 }
 
 addGitIgnore() {
-    local gitignore="*.swp
+    local gitignore="
+    *.swp
     *.*~
     project.lock.json
     .DS_Store
@@ -126,7 +127,9 @@ addGitIgnore() {
     msbuild.wrn
     
     # Visual Studio 2015
-    .vs/"
+    .vs/
+    */**/bin
+    */**/obj"
     echo "$gitignore" > .gitignore
     emptyLine
     echo ".gitignore added"
