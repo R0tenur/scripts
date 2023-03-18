@@ -129,7 +129,7 @@ addGitIgnore() {
     # Visual Studio 2015
     .vs/
     */**/bin
-    */**/obj"
+    **/obj"
     echo "$gitignore" > .gitignore
     emptyLine
     echo ".gitignore added"
@@ -210,7 +210,7 @@ addInfoPropertyNode () {
     local file=$1
     local name=$2
     local value=$3
-    sed -i '' "s/<\/PropertyGroup>/\\ \\ <$name>$value<\/$name>\n \\ <\/PropertyGroup>/g" "$file"
+    sed -i '' "s/<\/PropertyGroup>/\\ \\ <$name>$value<\/$name> \\ <\/PropertyGroup>/g" "$file"
 }
 
 main "$1";
