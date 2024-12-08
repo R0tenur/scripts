@@ -19,34 +19,34 @@ main() {
     # create base folder
     mkdir $(toKebabCase $kebabCaseName)
     cd $kebabCaseName
-    
+
     # Init git
     git init
-    
-    echo "# $name" > "README.md"
-    
+
+    echo "# $name" >"README.md"
+
     addGitIgnore
-    
+
     dotnet new sln -n "$name"
-    
+
     commit "Setup project"
-    
+
     addSourceProject $name
-    
+
     commit "Add source project"
-    
+
     addTestProject $name
-    
+
     commit "Add test project"
-    
+
     addSampleProject $name
-    
+
     commit "Add sample project"
-    
+
     addPipeline $name
-    
+
     commit "Add pipeline"
-    
+
     echo "Done!"
     echo "Add the following environment variables to your github secrets"
     echo "NUGET_API_KEY"
@@ -55,7 +55,7 @@ main() {
 
 addSourceProject() {
     local name=$1
-    
+
     # Create source project
     dotnet new classlib -o "src/$name"
     dotnet sln add "src/$name"
@@ -71,7 +71,7 @@ addSourceProject() {
 
 addTestProject() {
     local name=$1
-    
+
     # Create test project
     dotnet new xunit -o "test/$name.Test"
     dotnet sln add "test/$name.Test"
@@ -81,15 +81,15 @@ addTestProject() {
 }
 addSampleProject() {
     local name=$1
-    
+
     # Create sample project
     dotnet new console -o "sample/$name.Sample"
     dotnet sln add "sample/$name.Sample"
     dotnet add "sample/$name.Sample" reference "src/$name"
 }
 
-toKebabCase () {
-    echo $(echo "$(echo $1  | sed -e 's/\([a-z0-9]\)\([A-Z]\)/\1-\2/g' -e 's/\./-/')" | tr '[:upper:]' '[:lower:]')
+toKebabCase() {
+    echo $(echo "$(echo $1 | sed -e 's/\([a-z0-9]\)\([A-Z]\)/\1-\2/g' -e 's/\./-/')" | tr '[:upper:]' '[:lower:]')
 }
 
 addGitIgnore() {
@@ -129,8 +129,8 @@ addGitIgnore() {
     # Visual Studio 2015
     .vs/
     */**/bin
-    **/obj"
-    echo "$gitignore" > .gitignore
+    */**/obj"
+    echo "$gitignore" >.gitignore
     emptyLine
     echo ".gitignore added"
 }
@@ -191,7 +191,7 @@ addPipeline() {
     NUGET_API_KEY: \${{ secrets.NugetApiKey }}
     run: cd dist && dotnet nuget push \"*.nupkg\" --api-key \"\$NUGET_API_KEY\" --skip-duplicate --source https://www.nuget.org/api/v2/package"
     mkdir -p .github/workflows
-    echo "$pipeline" > .github/workflows/ci-cd.yml
+    echo "$pipeline" >.github/workflows/ci-cd.yml
     emptyLine
     echo "Pipeline added"
 }
@@ -206,11 +206,11 @@ commit() {
     git commit -m "chore: $message"
 }
 
-addInfoPropertyNode () {
+addInfoPropertyNode() {
     local file=$1
     local name=$2
     local value=$3
     sed -i '' "s/<\/PropertyGroup>/\\ \\ <$name>$value<\/$name> \\ <\/PropertyGroup>/g" "$file"
 }
 
-main "$1";
+main "$1"
